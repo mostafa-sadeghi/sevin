@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 
 screen_width = 1000
 screen_height = 700
@@ -13,6 +14,12 @@ dog_rect = dog.get_rect()
 dog_rect.bottom = screen_height
 dog_rect.centerx = screen_width/2
 
+dog_right = pygame.transform.flip(dog, True, False)
+dog_left = dog
+
+DOG_NORMAL_VELOCITY = 5
+DOG_BOOST_VELOCITY = 15
+velocity = DOG_NORMAL_VELOCITY
 running = True
 while running:
     for event in pygame.event.get():
@@ -20,9 +27,19 @@ while running:
             running = False
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        dog_rect.x -= 5
+        dog_rect.x -= velocity
+        dog = dog_left
     if keys[pygame.K_RIGHT]:
-        dog_rect.x += 5
+        dog_rect.x += velocity
+        dog = dog_right
+
+    if keys[K_UP]:
+        dog_rect.y -= velocity
+    if keys[K_SPACE]:
+        velocity = DOG_BOOST_VELOCITY
+    else:
+        velocity = DOG_NORMAL_VELOCITY
+    
     screen.fill((0,0,0))
     screen.blit(dog,dog_rect)
     pygame.display.update()

@@ -23,8 +23,11 @@ catch_sound = pygame.mixer.Sound("wolf_game/Chomp.wav")
 
 
 wolf_rect = wolf.get_rect()
-wolf_rect.bottom = SCREEN_HEIGHT
+wolf_rect.bottom = SCREEN_HEIGHT/2
 wolf_rect.right = SCREEN_WIDTH
+
+wolf_speed_y = 5
+
 
 sheep = pygame.image.load("wolf_game/sheep.png")
 sheep = pygame.transform.flip(sheep, True, False)
@@ -99,17 +102,24 @@ while running:
         screen.blit(welcome_text, welcome_rect)
     else:
         if not music_played:
-            print("blalallalalalla")
             pygame.mixer.music.play(-1)
             music_played = True
         
+        if wolf_rect.bottom < SCREEN_HEIGHT:
+            wolf_rect.y += wolf_speed_y
+
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP] and wolf_rect.top > 0:
-            wolf_rect.y -= 5
-        if keys[pygame.K_DOWN] and wolf_rect.bottom < SCREEN_HEIGHT:
-            wolf_rect.y += 5
+        if keys[pygame.K_SPACE]:
+            wolf_rect.y -= 20
+
+        
+        # if keys[pygame.K_UP] and wolf_rect.top > 0:
+        #     wolf_rect.y -= 5
+        # if keys[pygame.K_DOWN] and wolf_rect.bottom < SCREEN_HEIGHT:
+        #     wolf_rect.y += 5
 
         sheep_rect.x += 5
+
         if sheep_rect.x > SCREEN_WIDTH:
             sheep_rect.topleft = (0, randint(100, SCREEN_HEIGHT - 48))
             lives -= 1
